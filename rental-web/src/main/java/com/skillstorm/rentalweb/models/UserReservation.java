@@ -2,7 +2,6 @@ package com.skillstorm.rentalweb.models;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -26,24 +23,24 @@ public class UserReservation {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="rID")
+	@Column(name="rId")
 	private int rId;
 	
 	//TODO: Can a reservation have many cars?
-	@OneToOne
+	@OneToOne()
 	@JoinColumn(name = "license")
 	@JsonIdentityReference(alwaysAsId = true)
 	private Car car;
 	
-	@ManyToOne
+	@OneToOne()
 	@JoinColumn(name = "uid")
 	@JsonIdentityReference(alwaysAsId = true)
 	private User user;
 	
 	@DateTimeFormat(pattern="yyyyMMdd")
-	private Calendar rStart;
+	private Date rStart;
 	@DateTimeFormat(pattern="yyyyMMdd")
-	private Calendar rEnd;
+	private Date rEnd;
 	
 	@Override
 	public String toString() {
@@ -55,7 +52,7 @@ public class UserReservation {
 		
 	}
 
-	public UserReservation(int rId, Car car, User user, Calendar rStart, Calendar rEnd) {
+	public UserReservation(int rId, Car car, User user, Date rStart, Date rEnd) {
 		super();
 		this.rId = rId;
 		this.car = car;
@@ -88,7 +85,7 @@ public class UserReservation {
 		this.user = user;
 	}
 
-	public Calendar getrStart() {
+	public Date getrStart() {
 		return rStart;
 	}
 
@@ -96,7 +93,7 @@ public class UserReservation {
 		this.rStart = parseDate(rStart);
 	}
 
-	public Calendar getrEnd() {
+	public Date getrEnd() {
 		return rEnd;
 	}
 
@@ -104,7 +101,7 @@ public class UserReservation {
 		this.rEnd = parseDate(rEnd);;
 	}
 	
-	private Calendar parseDate(String toParse) {
+	private Date parseDate(String toParse) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 		Date date = null;
 		try {
@@ -113,16 +110,6 @@ public class UserReservation {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		return cal;
+		return date;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 }

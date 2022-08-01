@@ -1,6 +1,5 @@
 package com.skillstorm.rentalweb.models;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,10 +8,15 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.skillstorm.rentalweb.tools.EntityIdResolver;
 
 @Entity
 @Table(name = "car")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "license")
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class, 
+		property = "license",
+		resolver = EntityIdResolver.class,
+		scope = Car.class)
 public class Car {
 	
 //	Add validation annotations
@@ -96,9 +100,4 @@ public class Car {
 	public void setIsAvailable(int isAvailable) {
 		this.isAvailable = isAvailable;
 	}
-	
-	
-	
-	
-	
 }
