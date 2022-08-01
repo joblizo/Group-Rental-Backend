@@ -14,18 +14,20 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.skillstorm.rentalweb.tools.EntityIdResolver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 
 @Entity
 @Table(name = "user")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(
+				generator = ObjectIdGenerators.PropertyGenerator.class, 
+				property = "id", 
+				resolver = EntityIdResolver.class,
+				scope = User.class)
 public class User {
 
 	@Id
@@ -50,7 +52,7 @@ public class User {
 		return "User [id=" + id + ", name=" + name + ", phone=" + phone + ", birthday=" + dob + ", email=" + email
 				+ "]";
 	}
-	
+
 	public User() {
 		
 	}
@@ -113,6 +115,5 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	
+	}	
 }
