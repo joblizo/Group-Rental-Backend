@@ -10,4 +10,6 @@ import com.skillstorm.rentalweb.models.Car;
 public interface CarRepository extends CrudRepository<Car, String>{
 	Car findByLicense(String license);
 	List<Car> deleteByLicense(String license);
+	List<Car> findByCapacity(int capacity);
+	List<Car> findByLicenseIn(List<String> licenses);
 }

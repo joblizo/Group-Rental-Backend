@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.skillstorm.rentalweb.models.AvailableCarsForm;
+import com.skillstorm.rentalweb.models.Car;
 import com.skillstorm.rentalweb.models.UserReservation;
 import com.skillstorm.rentalweb.services.UserReservationService;
 
@@ -26,7 +28,7 @@ public class UserReservationController {
 	@Autowired
 	UserReservationService service;
 	
-	//find all
+		//find all
 		@GetMapping()
 		public Iterable<UserReservation> findAll(){
 			return service.findAll();		
@@ -36,6 +38,11 @@ public class UserReservationController {
 		@GetMapping("/{id}")
 		public UserReservation findbyLicense(@PathVariable int id){
 			return service.findById(id);
+		}
+		
+		@GetMapping("/cars")
+		public List<Car> getAvailableCars(@Valid @RequestBody AvailableCarsForm availableCarsForm){
+			return service.getAvailableCars(availableCarsForm);
 		}
 		
 		@PostMapping
