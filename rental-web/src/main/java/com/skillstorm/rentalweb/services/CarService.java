@@ -17,6 +17,4 @@ public interface CarService {
 	public Car save(Car car);
 	public Car update(Car car);
 	public List<Car>  deleteByLicense(String License);
-	
-	
 }
