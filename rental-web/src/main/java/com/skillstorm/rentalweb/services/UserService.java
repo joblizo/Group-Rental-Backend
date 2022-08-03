@@ -11,6 +11,7 @@ public interface UserService {
 
 	public Iterable<User> findAll();
 	public User findById(int id);
+	public User findByEmail(String email);
 	public User save(User user);
 	public User update(User user);
 	public List<User> deleteById(int id);
