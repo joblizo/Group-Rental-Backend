@@ -17,6 +17,7 @@ import com.skillstorm.rentalweb.models.UserReservation;
 import com.skillstorm.rentalweb.repositories.CarRepository;
 import com.skillstorm.rentalweb.repositories.UserRepository;
 import com.skillstorm.rentalweb.repositories.UserReservationRepository;
+import com.skillstorm.rentalweb.tools.CarJustRentedException;
 
 @Service
 @Transactional
@@ -50,8 +51,20 @@ public class UserReservationServiceImpl implements UserReservationService{
 	}
 
 	@Override
-	public UserReservation save(UserReservation userReservation) {
-		return userReservationRepository.save(userReservation);
+	public UserReservation save(UserReservation userReservation) throws CarJustRentedException {
+		//Validate if car is still available
+		Car car = userReservation.getCar();
+		System.out.println("Dates: " + userReservation.getrStart() + " " + userReservation.getrEnd());
+		AvailableCarsForm availableCarsForm = new AvailableCarsForm(car.getCapacity(), userReservation.getrStart(), userReservation.getrEnd());
+		
+		List<Car> availableCars = getAvailableCars(availableCarsForm);
+		System.out.println("Available cars: " + availableCars);
+		if(availableCars.contains(car)){
+			return userReservationRepository.save(userReservation);
+		}
+		
+		CarJustRentedException ex = new CarJustRentedException("Car was just rented by another user. Sorry!");
+		throw ex;
 	}
 
 	@Override
@@ -68,13 +81,11 @@ public class UserReservationServiceImpl implements UserReservationService{
 		User user = userRepository.findByEmail(reservationsByEmailForm.getEmail());		
 		return userReservationRepository.findByUser(user);
 	}
-	
 
 	public List<Car> findByCapacity(int capacity) {
 		return carRepository.findByCapacity(capacity);
 	}
 	
-//	TODO: Add cars without reservations
 	@Override
 	public List<Car> getAvailableCars(AvailableCarsForm availableCarsForm) {
 		//Filter cars by capacity TODO: Could refactor this to only get licenses so that we can remove the for each loop after
@@ -107,6 +118,7 @@ public class UserReservationServiceImpl implements UserReservationService{
 	
 	public List<String> getUnreservedCars(List<String> licenses){
 		return userReservationRepository.getUnreservedCars(licenses);
-		
 	}
+	
+	
 }

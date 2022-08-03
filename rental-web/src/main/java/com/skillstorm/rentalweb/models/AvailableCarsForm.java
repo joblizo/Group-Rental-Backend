@@ -1,5 +1,8 @@
 package com.skillstorm.rentalweb.models;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AvailableCarsForm {
 	
 	private int capacity;
@@ -15,6 +18,14 @@ public class AvailableCarsForm {
 
 	AvailableCarsForm(){
 		
+	}
+	
+	public AvailableCarsForm(int capacity, Date startDate, Date endDate) {
+		//Converts Date to Int
+		super();
+		this.capacity = capacity;
+		this.startDate = dateToInt(startDate);
+		this.endDate = dateToInt(endDate);
 	}
 
 	public AvailableCarsForm(int capacity, int startDate, int endDate) {
@@ -48,6 +59,11 @@ public class AvailableCarsForm {
 		this.endDate = endDate;
 	}
 	
+	public int dateToInt(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		String dateString = sdf.format(date);
+		return Integer.parseInt(dateString);
+	}
 	
 
 }
