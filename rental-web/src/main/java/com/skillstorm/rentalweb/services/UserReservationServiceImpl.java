@@ -11,8 +11,11 @@ import org.springframework.stereotype.Service;
 
 import com.skillstorm.rentalweb.models.AvailableCarsForm;
 import com.skillstorm.rentalweb.models.Car;
+import com.skillstorm.rentalweb.models.ReservationsByEmailForm;
+import com.skillstorm.rentalweb.models.User;
 import com.skillstorm.rentalweb.models.UserReservation;
 import com.skillstorm.rentalweb.repositories.CarRepository;
+import com.skillstorm.rentalweb.repositories.UserRepository;
 import com.skillstorm.rentalweb.repositories.UserReservationRepository;
 
 @Service
@@ -24,15 +27,26 @@ public class UserReservationServiceImpl implements UserReservationService{
 	@Autowired 
 	private CarRepository carRepository;
 	
+	@Autowired 
+	private UserRepository userRepository;
+	
 	@Override
 	public Iterable<UserReservation> findAll() {
 		return userReservationRepository.findAll();
 	}
 
+	//Find by Reservation ID
 	@Override
 	public UserReservation findById(int id) {
 		Optional<UserReservation> userReservation = userReservationRepository.findById(id);
 		return userReservation.isPresent() ? userReservation.get() : null;
+	}
+	
+	//Find by Reservation ID
+	@Override
+	public List<UserReservation> findByUser(User user) {
+		List<UserReservation> userReservations = userReservationRepository.findByUser(user);
+		return userReservations.isEmpty() ? null : userReservations;
 	}
 
 	@Override
@@ -49,6 +63,12 @@ public class UserReservationServiceImpl implements UserReservationService{
 	public List<UserReservation> deleteById(int id) {
 		return userReservationRepository.deleteById(id);
 	}
+	
+	public List<UserReservation>getReservationByEmail(ReservationsByEmailForm reservationsByEmailForm){
+		User user = userRepository.findByEmail(reservationsByEmailForm.getEmail());		
+		return userReservationRepository.findByUser(user);
+	}
+	
 
 	public List<Car> findByCapacity(int capacity) {
 		return carRepository.findByCapacity(capacity);

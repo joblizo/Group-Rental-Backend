@@ -28,6 +28,11 @@ public class UserServiceImpl implements UserService{
 		Optional<User> user = repository.findById(id);
 		return user.isPresent() ? user.get() : null;
 	}
+	
+	@Override
+	public User findByEmail(String email) {
+		return repository.findByEmail(email);
+	}
 
 	@Override
 	public User save(User user) {
@@ -44,5 +49,4 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return repository.deleteById(id);
 	}
-
 }

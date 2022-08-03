@@ -7,11 +7,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.skillstorm.rentalweb.models.User;
 import com.skillstorm.rentalweb.models.UserReservation;
 
 @Repository
 public interface UserReservationRepository extends CrudRepository<UserReservation, Integer>{
 	List<UserReservation> deleteById(int id);
+	List<UserReservation> findByUser(User user);
 	
 	@Query(value="Select license from userreservations WHERE license in (:cars) AND NOT((r_start BETWEEN :sDate AND :eDate) OR (r_end BETWEEN :sDate AND :eDate) OR (r_start <= :sDate AND r_end >= :eDate))",
 			nativeQuery = true)
