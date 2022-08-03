@@ -45,6 +45,7 @@ public class User {
 	private Calendar dob;
 	
 	@Email
+	@Column(unique=true)
 	private String email;
 
 	@Override
