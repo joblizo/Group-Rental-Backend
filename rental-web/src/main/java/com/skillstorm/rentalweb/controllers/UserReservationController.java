@@ -3,6 +3,7 @@ package com.skillstorm.rentalweb.controllers;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,14 +45,16 @@ public class UserReservationController {
 			return service.findById(id);
 		}
 	
-		@GetMapping("/cars")
-		public List<Car> getAvailableCars(@Valid @RequestBody AvailableCarsForm availableCarsForm){
+		@GetMapping("/cars/{capacity}/{sDate}/{eDate}")
+		public List<Car> getAvailableCars(@PathVariable @NotBlank int capacity, @PathVariable @NotBlank int sDate, @PathVariable @NotBlank int eDate ){
+			AvailableCarsForm availableCarsForm = new AvailableCarsForm(capacity, sDate, sDate);
 			return service.getAvailableCars(availableCarsForm);
 		}
 		
 		//find reservations by email
-		@GetMapping("/user")
-		public List<UserReservation> getReservationByEmail(@Valid @RequestBody ReservationsByEmailForm reservationsByEmailForm){
+		@GetMapping("/user/{email}")
+		public List<UserReservation> getReservationByEmail(@PathVariable @NotBlank String email){
+			ReservationsByEmailForm reservationsByEmailForm = new ReservationsByEmailForm(email);
 			return service.getReservationByEmail(reservationsByEmailForm);
 		}
 		
