@@ -41,6 +41,16 @@ public class UserController {
 		return service.findById(id);
 	}
 	
+	//find by email
+	@GetMapping("/email/{email}")
+	public User findByEmail(@PathVariable String email){
+		User user = service.findByEmail(email);
+		if(user != null) {
+			return user;
+		}
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Email:%s not found, please check request.", email));
+	}
+	
 	@PostMapping
 	public User create(@Valid @RequestBody User user) {
 		try {
