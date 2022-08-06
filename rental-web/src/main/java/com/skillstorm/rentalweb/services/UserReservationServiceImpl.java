@@ -82,14 +82,14 @@ public class UserReservationServiceImpl implements UserReservationService{
 		return userReservationRepository.findByUser(user);
 	}
 
-	public List<Car> findByCapacity(int capacity) {
-		return carRepository.findByCapacity(capacity);
+	public List<Car> findByCapacityGreaterThanEqual(int capacity) {
+		return carRepository.findByCapacityGreaterThanEqual(capacity);
 	}
 	
 	@Override
 	public List<Car> getAvailableCars(AvailableCarsForm availableCarsForm) {
 		//Filter cars by capacity TODO: Could refactor this to only get licenses so that we can remove the for each loop after
-		List<Car> cars = findByCapacity(availableCarsForm.getCapacity());
+		List<Car> cars = findByCapacityGreaterThanEqual(availableCarsForm.getCapacity());
 		
 		//Get licenses of cars
 		List<String> licenses = new ArrayList<String>();
