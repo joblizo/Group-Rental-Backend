@@ -47,7 +47,7 @@ public class UserReservationController {
 	
 		@GetMapping("/cars/{capacity}/{sDate}/{eDate}")
 		public List<Car> getAvailableCars(@PathVariable @NotBlank int capacity, @PathVariable @NotBlank int sDate, @PathVariable @NotBlank int eDate ){
-			AvailableCarsForm availableCarsForm = new AvailableCarsForm(capacity, sDate, sDate);
+			AvailableCarsForm availableCarsForm = new AvailableCarsForm(capacity, sDate, eDate);
 			return service.getAvailableCars(availableCarsForm);
 		}
 		
